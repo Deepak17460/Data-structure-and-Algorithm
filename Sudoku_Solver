@@ -1,0 +1,52 @@
+//Sudoku Solver Problem(Backtracking + Recursive)
+Using Two Simplest approach
+Time Complexity is O(9^n) where n is the Number of Empty Cell in (9*9 grid) And Space Complexity is O(1), Because there is limited recursive called in it,Atmost  9*9 calling can be possible
+
+Code:-
+
+bool isSafe(int i,int j,vector<vector<int>>& sudoku,int v){
+     // row checking
+    for(int row=0;row<sudoku.size();row++){
+        if(sudoku[i][row]==v)
+            return false;
+    // coloum checking
+    //for(int col=0;col<sudoku.size();col++){
+        if(sudoku[row][j]==v)
+            return false;
+               // 3*3 matrix checking 
+            if(sudoku[3*(i/3)+row/3][3*(j/3)+row%3]==v)
+                return false;    
+    }
+        return true;
+   
+}
+bool Helper(vector<vector<int>>& sudoku){
+    for(int i=0;i<sudoku.size();i++){
+        for(int j=0;j<sudoku.size();j++){
+            if(sudoku[i][j]==0){
+                for(int v=1;v<=9;v++){
+                    if(isSafe(i,j,sudoku,v)){
+                        sudoku[i][j]=v;
+                        // recursive calling
+                        bool Rest_Cell=Helper(sudoku);
+                        if(Rest_Cell){
+                            return true;
+                        }
+                        // backtracking
+                        else
+                        {
+                            sudoku[i][j]=0;
+                        }
+                    }
+                }
+                return false;
+            }
+        }
+    }
+    return true;
+    
+}
+void solveSudoku(vector<vector<int>>& sudoku)
+{
+   Helper(sudoku);
+}
